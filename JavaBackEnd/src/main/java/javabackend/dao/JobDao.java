@@ -16,8 +16,9 @@ public interface JobDao {
 
 	public void deleteJob(int jobid);
 
-	public List<Job> getJobByStatus(String status);
+	public List<Job> getJobByStatus();
 
 	public List<Job> getJobByExpirydate(String expirydate);
 
+	// List<String> getDistinctJobStatus();
 }

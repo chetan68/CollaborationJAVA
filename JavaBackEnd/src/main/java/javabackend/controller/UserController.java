@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import javabackend.dao.UserDao;
 import javabackend.model.User;
@@ -27,6 +28,12 @@ public class UserController {
 
 	@Autowired
 	private UserDao userDao;
+
+	@RequestMapping("/")
+	public ModelAndView doindex() {
+		ModelAndView mv = new ModelAndView("index");
+		return mv;
+	}
 
 	@RequestMapping(value = "/users/{id}", method = RequestMethod.GET)
 	public ResponseEntity<User> getUserById(@PathVariable(value = "id") int id) {
@@ -123,4 +130,19 @@ public class UserController {
 		userDao.deleteUser(id);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
+
+	@RequestMapping(value = "/getUsers", method = RequestMethod.GET)
+	public ResponseEntity<?> getAllUsers(HttpSession session) {
+		User user = (User) session.getAttribute("user");
+		if (user == null)
+			return new ResponseEntity<Error>(new Error(1, "Unauthorized user"), HttpStatus.UNAUTHORIZED);
+		else {
+			List<User> users = userDao.getAllUsers(user);
+			for (User u : users)
+				System.out.println("IsONline " + u.isOnline());
+			return new ResponseEntity<List<User>>(users, HttpStatus.OK);
+		}
+
+	}
+
 }

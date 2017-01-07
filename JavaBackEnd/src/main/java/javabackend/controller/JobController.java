@@ -38,9 +38,47 @@ public class JobController {
 
 	@RequestMapping(value = "/getAllJobs", method = RequestMethod.GET)
 	public ResponseEntity<?> getAllJobs(HttpSession session) {
-		List<Job> jobs = jobDao.getAllJobs();
-		return new ResponseEntity<List<Job>>(jobs, HttpStatus.OK);
+		List<Job> jobs;
+		User user = (User) session.getAttribute("user");
+		if (user == null) {
+			Error error = new Error(1, "Unauthorized user.. login using valid credentials");
+			return new ResponseEntity<Error>(error, HttpStatus.UNAUTHORIZED);// 401
+		} else if (user.getRole().equalsIgnoreCase("ADMIN")) {
+			System.out.println("admin logged in..........");
+			jobs = jobDao.getJobByStatus();
+			return new ResponseEntity<List<Job>>(jobs, HttpStatus.OK);
+		} else {
+			jobs = jobDao.getAllJobs();
+			return new ResponseEntity<List<Job>>(jobs, HttpStatus.OK);
+		}
 	}
+
+	/*
+	 * @RequestMapping(value = "/getDistinctJobStatus", method =
+	 * RequestMethod.GET) public ResponseEntity<?>
+	 * getDistinctJobStatus(HttpSession session) { List<String> statuslist; User
+	 * user = (User) session.getAttribute("user"); if (user == null) { Error
+	 * error = new Error(1,
+	 * "Unauthorized user.. login using valid credentials"); return new
+	 * ResponseEntity<Error>(error, HttpStatus.UNAUTHORIZED);// 401 } else {
+	 * statuslist = jobDao.getDistinctJobStatus(); return new
+	 * ResponseEntity<List<String>>(statuslist, HttpStatus.OK); } }
+	 */
+	/*
+	 * //@RequestMapping(value = "/jobsta/{status}", method = RequestMethod.GET)
+	 * 
+	 * @RequestMapping(value = "/jobsta", method = RequestMethod.GET) public
+	 * ResponseEntity<?> getJobByStatus(HttpSession session) { User user =
+	 * (User) session.getAttribute("user"); if (user == null) { Error error =
+	 * new Error(1, "Unauthorized user.. login using valid credentials"); return
+	 * new ResponseEntity<Error>(error, HttpStatus.UNAUTHORIZED);// 401 } else
+	 * if (user.getRole().equalsIgnoreCase("ADMIN")) {
+	 * System.out.println("admin logged in.........."); List<Job> jobs =
+	 * jobDao.getJobByStatus(); return new ResponseEntity<List<Job>>(jobs,
+	 * HttpStatus.OK); } else { Error error = new Error(2,
+	 * "Unauthorized user.."); return new ResponseEntity<Error>(error,
+	 * HttpStatus.UNAUTHORIZED);// 401 } }
+	 */
 
 	@RequestMapping(value = "/job/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Job> getJobById(@PathVariable(value = "id") int id) {
@@ -91,35 +129,18 @@ public class JobController {
 		}
 	}
 
-	@RequestMapping(value = "/jobsta/{status}", method = RequestMethod.GET)
-	public ResponseEntity<?> getJobByStatus(@PathVariable(value = "status") String status, HttpSession session) {
-		User user = (User) session.getAttribute("user");
-		if (user == null) {
-			Error error = new Error(1, "Unauthorized user.. login using valid credentials");
-			return new ResponseEntity<Error>(error, HttpStatus.UNAUTHORIZED);// 401
-		} else if (user.getRole().equalsIgnoreCase("ADMIN")) {
-			List<Job> jobs = jobDao.getJobByStatus(status);
-			return new ResponseEntity<List<Job>>(jobs, HttpStatus.OK);
-		} else {
-			Error error = new Error(2, "Unauthorized user..");
-			return new ResponseEntity<Error>(error, HttpStatus.UNAUTHORIZED);// 401
-		}
-	}
-
-	/*@RequestMapping(value = "/jobex/{expired}", method = RequestMethod.GET)
-	public ResponseEntity<?> getJobByExpirydate(@PathVariable(value = "expired") String expirydate,
-			HttpSession session) {
-		User user = (User) session.getAttribute("user");
-		if (user == null) {
-			Error error = new Error(1, "Unauthorized user.. login using valid credentials");
-			return new ResponseEntity<Error>(error, HttpStatus.UNAUTHORIZED);// 401
-		} else if (user.getRole().equalsIgnoreCase("Admin")) {
-			List<Job> jobs = jobDao.getJobByExpirydate(expirydate);
-			return new ResponseEntity<List<Job>>(jobs, HttpStatus.OK);
-		} else {
-			Error error = new Error(2, "Unauthorized user..");
-			return new ResponseEntity<Error>(error, HttpStatus.UNAUTHORIZED);// 401
-		}
-	}*/
+	/*
+	 * @RequestMapping(value = "/jobex/{expired}", method = RequestMethod.GET)
+	 * public ResponseEntity<?> getJobByExpirydate(@PathVariable(value =
+	 * "expired") String expirydate, HttpSession session) { User user = (User)
+	 * session.getAttribute("user"); if (user == null) { Error error = new
+	 * Error(1, "Unauthorized user.. login using valid credentials"); return new
+	 * ResponseEntity<Error>(error, HttpStatus.UNAUTHORIZED);// 401 } else if
+	 * (user.getRole().equalsIgnoreCase("Admin")) { List<Job> jobs =
+	 * jobDao.getJobByExpirydate(expirydate); return new
+	 * ResponseEntity<List<Job>>(jobs, HttpStatus.OK); } else { Error error =
+	 * new Error(2, "Unauthorized user.."); return new
+	 * ResponseEntity<Error>(error, HttpStatus.UNAUTHORIZED);// 401 } }
+	 */
 
 }

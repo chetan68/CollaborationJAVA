@@ -14,6 +14,12 @@ app.factory('JobService',function($http){
 		return $http.get(BASE_URL + "/job/"+ id)
 	};
 	
+	
+	/*
+	 * jobService.getDistinctJobStatus=function(id){ return $http.get(BASE_URL +
+	 * "/getDistinctJobStatus") };
+	 */
+	
 	jobService.updatejob=function(jobid,job){
 		console.log('update job in service')
 		console.log('job id ' + jobid)
@@ -32,18 +38,14 @@ app.factory('JobService',function($http){
 			})
 	};
 
-	jobService.listApprovedJobs=function(st){
-		
-		console.log("entering approved job in service");
-		return $http.get(BASE_URL + "/jobsta/"+ st)
-		.then(function(response){
-			console.log(response.status)
-			return response.status;
-		},function(response){
-			alert("Not authorized to get job...")
-			console.log(response.status)
-			})
-	};
+	/*
+	 * jobService.getJobsByStatus=function(st){ console.log("entering approved
+	 * job in service"); console.log(BASE_URL + "/jobsta/"+ st) return
+	 * $http.get(BASE_URL + "/jobsta/"+ st) .then(function(response){
+	 * console.log(response.status) return response.status;
+	 * },function(response){ alert("Not authorized to get job...")
+	 * console.log(response.status) }) };
+	 */
 	
 	return jobService;
 })

@@ -26,27 +26,33 @@ public class JobDaoImpl implements JobDao {
 		this.sessionFactory = sessionFactory;
 	}
 
-	@Override
-	public void postJob(Job job) {
+	public List<Job> getJobByExpirydate(String expirydate) {
 		Session session = sessionFactory.openSession();
-		session.save(job);
-		session.flush();
-		session.close();
-	}
-
-	@Override
-	public List<Job> getAllJobs() {
-		Session session = sessionFactory.openSession();
-		// Query query=session.createQuery("from Job where status='approved' and
-		// hasexpired='no'");
-		
-		Query query = session.createQuery("from Job  order by jobid desc");
+		Query query = session.createQuery("from Job where hasexpired ='" + expirydate + "'");
 		List<Job> jobs = query.list();
 		session.close();
 		return jobs;
 	}
 
-	@Override
+	public List<Job> getAllJobs() {
+		Session session = sessionFactory.openSession();
+		Query query = session.createQuery("from Job where status='A'  order by jobid desc");
+		// Query query = session.createQuery("from order by jobid desc");
+		List<Job> jobs = query.list();
+		session.close();
+		return jobs;
+	}
+
+	public List<Job> getJobByStatus() {
+		Session session = sessionFactory.openSession();
+		// Query query = session.createQuery("from Job where status ='" + status
+		// + "' order by jobid desc");
+		Query query = session.createQuery("from Job order by jobid desc");
+		List<Job> jobs = query.list();
+		session.close();
+		return jobs;
+	}
+
 	public Job getJobById(int id) {
 		Session session = sessionFactory.openSession();
 		// select * from personinfo where id=2
@@ -56,7 +62,6 @@ public class JobDaoImpl implements JobDao {
 
 	}
 
-	@Override
 	public Job updateJob(int jobid, Job job) {
 		Session session = sessionFactory.openSession();
 		System.out.println("Id of Job is to update is: " + job.getJobid());
@@ -71,7 +76,6 @@ public class JobDaoImpl implements JobDao {
 
 	}
 
-	@Override
 	public void deleteJob(int jobid) {
 		Session session = sessionFactory.openSession();
 		// make the object persistent - job
@@ -80,25 +84,21 @@ public class JobDaoImpl implements JobDao {
 		// Transient - job
 		session.flush();
 		session.close();
-
 	}
 
-	@Override
-	public List<Job> getJobByStatus(String status) {
+	public void postJob(Job job) {
 		Session session = sessionFactory.openSession();
-		Query query = session.createQuery("from Job where status ='" + status + "' order by jobid desc");
-		List<Job> jobs = query.list();
+		session.save(job);
+		session.flush();
 		session.close();
-		return jobs;
 	}
 
-	@Override
-	public List<Job> getJobByExpirydate(String expirydate) {
-		Session session = sessionFactory.openSession();
-		Query query = session.createQuery("from Job where hasexpired ='" + expirydate + "'");
-		List<Job> jobs = query.list();
-		session.close();
-		return jobs;
-	}
+	/*
+	 * @Override public List<String> getDistinctJobStatus() { Session session =
+	 * sessionFactory.openSession(); Query query = session.
+	 * createQuery("select distinct status as status from Job order by status");
+	 * List<String> statuslist = query.list(); session.close(); return
+	 * statuslist; }
+	 */
 
 }

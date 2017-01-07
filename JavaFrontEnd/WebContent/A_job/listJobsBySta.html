@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>List of Jobs</title>
+</head>
+<body>
+	<div>
+		<p>
+			Search: <input type="text" ng-model="test">
+			&nbsp;&nbsp;&nbsp;&nbsp;
+			Select Job Status: <select name="jobstatus" id="jobstatus" ng-model="jobstatus">
+				<option value="{{undefined}}">All</option>
+				<option value="P">Pending</option>
+				<option value="A">Approved</option>
+				<option value="R">Rejected</option>
+				
+			</select>
+			<!--  <input type="submit" value="Post Job" ng-click="getJobsByStatus('P')"> -->
+		</p>
+		<table class="table table-striped">
+			<tr>
+				<th>Job Id</th>
+				<th>Company Name</th>
+				<th>Job Title</th>
+				<th>Post Date</th>
+				<th>Job Description</th>
+				<th>Qualification</th>
+				<th>Salary</th>
+				<th>Location</th>
+				<th>Experience</th>
+				<th>Status</th>
+				<th>Expirydate</th>
+			</tr>
+			<tr
+				ng-repeat="value in jobs | filter : {status: jobstatus||undefined}: true | filter : test">
+				<td>{{value.jobid}}</td>
+				<td>{{value.companyname}}</td>
+				<td>{{value.title}}</td>
+				<td>{{value.postdate}}</td>
+				<td>{{value.description}}</td>
+				<td>{{value.qualification}}</td>
+				<td>{{value.salary}}</td>
+				<td>{{value.location}}</td>
+				<td>{{value.experience}}</td>
+
+				<td>{{value.status}}</td>
+
+
+				<td>{{value.expirydate}}</td>
+				<td ng-show="currentUser.role=='ADMIN'"><a
+					href="#/editJob?id={{value.jobid}}">Edit</a> &nbsp;&nbsp; <a
+					href="" ng-click="deleteJob(value.jobid)"
+					class="btn btn-xs btn-default"> <span
+						class="glyphicon glyphicon-trash"></span></a></td>
+			</tr>
+		</table>
+	</div>
+</body>
+</html>

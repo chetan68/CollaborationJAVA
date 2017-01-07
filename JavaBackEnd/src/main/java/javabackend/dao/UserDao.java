@@ -18,4 +18,6 @@ public interface UserDao {
 
 	User getUserById(int userid);
 
+	public List<User> getAllUsers(User user);
+
 }

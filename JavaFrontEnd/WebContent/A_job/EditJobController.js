@@ -17,7 +17,7 @@ app.controller('EditJobController', function($scope, $routeParams, $location,
 		console.log('update function in editcontroller')
 		JobService.updatejob(jobid, $scope.job).then(function(response) {
 			console.log(response.status)
-			$location.path('/listJobs')
+			$location.path('/listJobsAd')
 		}, function(response) {
 			console.log(response.status)
 		})

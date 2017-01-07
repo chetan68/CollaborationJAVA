@@ -7,7 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "A_job")
+@Table(name = "A_job1")
 public class Job {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -16,14 +16,12 @@ public class Job {
 	private String description;
 	private String postdate;
 	private String qualification;
-	private String salary;
+	private int salary;
 	private String location;
-	private String experience;
+	private int experience;
 	private String companyname;
-	private char status; // V-Vacanat, F-Filled, P-Pending ,A = Approved,R=
+	private String status; // V-Vacanat, F-Filled, P-Pending ,A = Approved,R=
 							// rejected
-	private int validity; // number of day
-
 	private String Expirydate;
 
 	public int getJobid() {
@@ -50,28 +48,12 @@ public class Job {
 		this.description = description;
 	}
 
-	public String getPostdate() {
-		return postdate;
-	}
-
-	public void setPostdate(String postdate) {
-		this.postdate = postdate;
-	}
-
 	public String getQualification() {
 		return qualification;
 	}
 
 	public void setQualification(String qualification) {
 		this.qualification = qualification;
-	}
-
-	public String getSalary() {
-		return salary;
-	}
-
-	public void setSalary(String salary) {
-		this.salary = salary;
 	}
 
 	public String getLocation() {
@@ -82,14 +64,6 @@ public class Job {
 		this.location = location;
 	}
 
-	public String getExperience() {
-		return experience;
-	}
-
-	public void setExperience(String experience) {
-		this.experience = experience;
-	}
-
 	public String getCompanyname() {
 		return companyname;
 	}
@@ -98,20 +72,36 @@ public class Job {
 		this.companyname = companyname;
 	}
 
-	public char getStatus() {
+	public int getSalary() {
+		return salary;
+	}
+
+	public void setSalary(int salary) {
+		this.salary = salary;
+	}
+
+	public int getExperience() {
+		return experience;
+	}
+
+	public void setExperience(int experience) {
+		this.experience = experience;
+	}
+
+	public String getStatus() {
 		return status;
 	}
 
-	public void setStatus(char status) {
+	public void setStatus(String status) {
 		this.status = status;
 	}
 
-	public int getValidity() {
-		return validity;
+	public String getPostdate() {
+		return postdate;
 	}
 
-	public void setValidity(int validity) {
-		this.validity = validity;
+	public void setPostdate(String postdate) {
+		this.postdate = postdate;
 	}
 
 	public String getExpirydate() {
@@ -121,5 +111,4 @@ public class Job {
 	public void setExpirydate(String expirydate) {
 		Expirydate = expirydate;
 	}
-
 }
